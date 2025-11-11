@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Applications</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-4">
+  <h2 class="text-center fw-bold mb-4">Student Applications</h2>
+
+  <a class="btn btn-dark mb-3" href="admin.html">View Contact Messages</a>
+
+  <table class="table table-bordered table-hover bg-white shadow">
+    <thead class="table-dark">
+      <tr>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Total Marks</th>
+        <th>Cutoff</th>
+        <th>Community</th>
+        <th>Group</th>
+        <th>School</th>
+        <th>Address</th>
+        <th>Parent Phone</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="applicationsTable"></tbody>
+  </table>
+</div>
+
+<script>
+async function loadApplications() {
+  const res = await fetch(" https://cga-backend-9iaz.onrender.com/api/applications");
+  const data = await res.json();
+
+  const table = document.getElementById("applicationsTable");
+  table.innerHTML = "";
+
+  data.forEach(app => {
+    table.innerHTML += `
+      <tr>
+        <td>${app.email}</td>
+        <td>${app.phone}</td>
+        <td>${app.marks}</td>
+        <td>${app.cutoff}</td>
+        <td>${app.community}</td>
+        <td>${app.group}</td>
+        <td>${app.school}</td>
+        <td>${app.address}</td>
+        <td>${app.parentPhone}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" onclick="deleteApp('${app._id}')">Delete</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+async function deleteApp(id) {
+  if (!confirm("Delete this application?")) return;
+
+  await fetch(` https://cga-backend-9iaz.onrender.com/api/applications/${id}`, {
+    method: "DELETE"
+  });
+
+  alert("✅ Deleted Successfully");
+  loadApplications();
+}
+
+loadApplications();
+</script>
+
+</body>
+</html>
