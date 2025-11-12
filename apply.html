@@ -105,6 +105,7 @@ document.getElementById("applyForm").addEventListener("submit", async function(e
   btn.disabled = true;
 
   const formData = {
+    name: document.getElementById("name").value,   // ✅ ADD THIS
     email: document.getElementById("email").value,
     phone: document.getElementById("phone").value,
     marks: document.getElementById("marks").value,
